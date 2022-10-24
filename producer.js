@@ -6,14 +6,19 @@ const kafka = new Kafka({
 })
 
 
-const producer = kafka.producer()
 
- producer.connect()
- producer.send({
-  topic: 'test-topic',
-  messages: [
-    { value: 'Hello KafkaJS user!' },
-  ],
-})
+var sendMessage = async () => {
 
-  producer.disconnect()
+  const producer = kafka.producer()
+
+  await producer.connect()
+  await producer.send({
+    topic: 'myRandomTopicString123',
+    messages: [
+      { value: 'Hello KafkaJS user ks!' },
+    ],
+  })
+  await producer.disconnect()
+}
+
+sendMessage();
