@@ -1,20 +1,21 @@
 const { Kafka } = require('kafkajs')
 
-const kafka = new Kafka({
-  clientId: 'my-app',
-  brokers: ['localhost:29092'],
-})
-
-
+const kafka = require('./kafka.js')
 const consumer = kafka.consumer({ groupId: 'test-group' })
 
- consumer.connect()
- consumer.subscribe({ topic: 'test-topic', fromBeginning: true })
+const run = async () => {
+  await consumer.connect()
+  await consumer.subscribe({ topic: 'myRandomTopicString123', fromBeginning: true })
 
- consumer.run({
-  eachMessage: async ({ topic, partition, message }) => {
-    console.log({
-      value: message.value.toString(),
-    })
-  },
-})
+  await consumer.run({
+    eachMessage: async ({ topic, partition, message }) => {
+      console.log({
+        partition,
+        offset: message.offset,
+        value: message.value.toString(),
+      })
+    },
+  })
+}
+
+run().catch(console.error)

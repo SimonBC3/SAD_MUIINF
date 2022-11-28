@@ -3,13 +3,11 @@ GET http://127.0.0.1:3000 HTTP/1.1
 
 ###
 
-POST http://localhost:3000/post 
+POST http://localhost:3000/work 
 Content-Type: application/json
 
 {
-    "user": "usr",
-    "password":"pass",
-    "params":"params"
+    "url": "http://google.com"
 }
 
 ###
