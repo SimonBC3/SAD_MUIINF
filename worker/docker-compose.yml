@@ -1,0 +1,10 @@
+version: '3.9'
+services:
+  worker:
+    build: .
+    network_mode: "host"
+    #networks:
+     # - internal
+#networks:
+#  internal:
+#    external: true
