@@ -1,15 +1,29 @@
-// Producing
+const { Kafka } = require('kafkajs')
+
+const kafka = new Kafka({
+    clientId: 'my-app',
+    brokers: ['localhost:29092']
+})
+
+const producer = kafka.producer()
+
+const run = async() => {
+
+// admin.connect()
+// admin.createTopics({
+//         waitForLeaders: true,
+//         topics: [
+//             { topic: 'myRandomTopicString123' },
+//         ],
+//     })
+    // Producing
 await producer.connect()
-admin.connect()
-admin.createTopics({
-    waitForLeaders: true,
-    topics: [
-        { topic: 'myRandomTopicString123' },
-    ],
-})
 await producer.send({
-    topic: 'myRandomTopicString123',
+    topic: 'test',
     messages: [
-        { value: 'Hello KafkaJS user!' },
+        { value: 'producer KafkaJS user!' },
     ],
-})
+}).then(console.log)
+}
+
+run().catch(console.error)
