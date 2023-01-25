@@ -14,7 +14,7 @@ const run = async () => {
     // Producing
     await producer.connect()    
     await producer.send({
-        topic: 'test',
+        topic: 'users',
         messages: [
             { value: JSON.stringify({hello: 'hello kafka',
                             repository: 'https://github.com/SimonBC3/movies'})},
@@ -23,7 +23,7 @@ const run = async () => {
 
     // Consuming
     await consumer.connect()
-    await consumer.subscribe({ topic: 'myRandomTopicString123', fromBeginning: true })
+    await consumer.subscribe({ topic: 'users', fromBeginning: true })
 
     await consumer.run({
         eachMessage: async ({ topic, partition, message }) => {

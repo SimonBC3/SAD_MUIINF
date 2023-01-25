@@ -18,12 +18,12 @@ const run = async() => {
 //     })
     // Producing
 await producer.connect()
-await producer.send({
-    topic: 'test',
+ producer.send({
+    topic: 'users',
     messages: [
         { value: 'producer KafkaJS user!' },
     ],
 }).then(console.log)
 }
 
-run().catch(console.error)
+run()
