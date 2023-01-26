@@ -35,8 +35,6 @@ const run = async () => {
                 offset: message.offset,
                 value: message.value.toString(),
             })
-            let jsonMessage = JSON.parse(message.value.toString)
-            console.log(jsonMessage.repository)
         },
     })
 }
