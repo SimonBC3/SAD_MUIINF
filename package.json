@@ -1,0 +1,23 @@
+{
+  "name": "sad_practicas",
+  "version": "1.0.0",
+  "description": "# Usage",
+  "main": "consumer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SimonBC3/SAD_practicas.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SimonBC3/SAD_practicas/issues"
+  },
+  "homepage": "https://github.com/SimonBC3/SAD_practicas#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "kafkajs": "^2.2.3"
+  }
+}
