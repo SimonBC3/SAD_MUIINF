@@ -28,8 +28,8 @@ const run = async () => {
     await consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
             let jsonMessage = JSON.parse(message.value.toString())
-            console.log(jsonMessage.repository)
-            //execute(`git clone ${message.value.repository.toString()}`)
+            console.log(jsonMessage.url)
+            //execute(`git clone ${message.value.url}`)
             //execute(`npm install`)
             execute(`node ${jsonMessage.path}${jsonMessage.fileName}`)
             console.log({
