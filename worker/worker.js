@@ -1,6 +1,7 @@
 const { Kafka } = require('kafkajs')
 const { exec } = require('child_process')
 const { stdout, stderr } = require('process')
+const fs = require('fs/promises')
 
 const kafka = new Kafka({
     clientId: 'my-app',
@@ -12,7 +13,7 @@ const consumer = kafka.consumer({ groupId: 'test-group' })
 
 const run = async () => {
     // Producing
-    await producer.connect()    
+    await producer.connect()
     // await producer.send({
     //     topic: 'users',
     //     messages: [
@@ -23,19 +24,35 @@ const run = async () => {
 
     // Consuming
     await consumer.connect()
-    await consumer.subscribe({ topic: 'users', fromBeginning: false })
+    await consumer.subscribe({ topic: 'in', fromBeginning: false })
 
     await consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
             let jsonMessage = JSON.parse(message.value.toString())
             console.log(jsonMessage.url)
+
             //execute(`git clone ${message.value.url}`)
             //execute(`npm install`)
-            execute(`node ${jsonMessage.path}${jsonMessage.fileName}`)
+            execute(`node ${jsonMessage.execPath}${jsonMessage.fileName}`)
+
             console.log({
                 partition,
                 offset: message.offset,
                 value: message.value.toString(),
+            })
+
+            //readOutFile
+            let outMessage = await read(jsonMessage.outPath, jsonMessage.outName)
+            await producer.send({
+                topic: 'out',
+                messages: [
+                    {
+                        value: JSON.stringify({
+                            uuid: `${jsonMessage.uuid}`,
+                            outMessage: `${outMessage}`
+                        })
+                    },
+                ],
             })
         },
     })
@@ -46,15 +63,26 @@ function execute(order) {
         if (err) {
             console.error(`error: ${err.message}`);
             return;
-          }
-        
-          if (stderr) {
+        }
+
+        if (stderr) {
             console.error(`stderr: ${stderr}`);
             return;
-          }
-        
-          console.log(`stdout:\n${stdout}`);
-    })   
+        }
+
+        console.log(`stdout:\n${stdout}`);
+    })
+}
+
+async function read(path, fileName) {
+    let data = ''
+    try {
+        let data = await fs.readFile(`${path}${fileName}`, { encoding: 'utf8' })
+        console.log(data)
+    } catch {
+        console.log(err)
+    }
+    return data;
 }
 
 run().catch(console.error)

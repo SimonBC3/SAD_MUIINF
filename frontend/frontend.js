@@ -14,13 +14,13 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.post('/job', function(req,res) {
-    send(nJob, req.body.url, req.body.path, req.body.fileName).catch( error => { return res.status(500).send('Internal error!')})
-   
-    //uuid
-    nJob++
+app.post('/job', function (req, res) {
+  send(nJob, req.body.url, req.body.execPath, req.body.execName, req.body.outPath, req.body.outName).catch(error => { return res.status(500).send('Internal error!') })
 
-    return res.status(200).send('Petition sent!')
+  //uuid
+  nJob++
+
+  return res.status(200).send('Petition sent!')
 })
 
 app.listen(port, () => {
@@ -29,19 +29,23 @@ app.listen(port, () => {
 
 
 //TODO: somewhere else and func imported
-async function send(uuid, url, path, fileName){
+async function send(uuid, url, execPath, execName, outPath, outName) {
   const producer = kafka.producer()
   await producer.connect()
 
   await producer.send({
-    topic: 'users',
+    topic: 'in',
     messages: [
-        { value: JSON.stringify({ uuid: `${uuid}`, 
-                                  url: `${url}`, 
-                                  path: `${path}`, 
-                                  fileName:`${fileName}`
-                                }) 
-        },
+      {
+        value: JSON.stringify({
+          uuid: `${uuid}`,
+          url: `${url}`,
+          execPath: `${execPath}`,
+          execName: `${execName}`,
+          outPath: `${outPath}`,
+          outName: `${outName}`
+        })
+      },
     ],
-})
+  })
 }
