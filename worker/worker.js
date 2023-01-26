@@ -9,40 +9,31 @@ const kafka = new Kafka({
 })
 
 const producer = kafka.producer()
-const consumer = kafka.consumer({ groupId: 'test-group' })
+const consumer = kafka.consumer({ groupId: 'worker-group' })
 
 const run = async () => {
-    // Producing
-    await producer.connect()
-    // await producer.send({
-    //     topic: 'users',
-    //     messages: [
-    //         { value: JSON.stringify({hello: 'hello kafka',
-    //                         repository: 'https://github.com/SimonBC3/movies'})},
-    //     ],
-    // })
-
     // Consuming
     await consumer.connect()
     await consumer.subscribe({ topic: 'in', fromBeginning: false })
 
     await consumer.run({
         eachMessage: async ({ topic, partition, message }) => {
-            let jsonMessage = JSON.parse(message.value.toString())
-            console.log(jsonMessage.url)
-
-            //execute(`git clone ${message.value.url}`)
-            //execute(`npm install`)
-            execute(`node ${jsonMessage.execPath}${jsonMessage.fileName}`)
-
             console.log({
                 partition,
                 offset: message.offset,
                 value: message.value.toString(),
             })
+            
+            let jsonMessage = JSON.parse(message.value.toString())
+
+            execute(`git clone ${jsonMessage.url} clone`)
+            //execute(`npm install`)
+            execute(`node ./clone${jsonMessage.execPath}${jsonMessage.execName} ${jsonMessage.args}`)
 
             //readOutFile
-            let outMessage = await read(jsonMessage.outPath, jsonMessage.outName)
+            let path = `./clone${jsonMessage.outPath}`
+            let outMessage = await read(`${jsonMessage.outPath}`, jsonMessage.outName)
+            await producer.connect()
             await producer.send({
                 topic: 'out',
                 messages: [
@@ -77,7 +68,7 @@ function execute(order) {
 async function read(path, fileName) {
     let data = ''
     try {
-        let data = await fs.readFile(`${path}${fileName}`, { encoding: 'utf8' })
+        data = await fs.readFile(`${path}${fileName}`, { encoding: 'utf8' })
         console.log(data)
     } catch {
         console.log(err)

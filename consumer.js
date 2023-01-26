@@ -5,11 +5,11 @@ const kafka = new Kafka({
   brokers: ['localhost:29092']
 })
 
-const consumer = kafka.consumer({ groupId: 'test-group' })
+const consumer = kafka.consumer({ groupId: 'out-group' })
 
 const run = async () => {
   await consumer.connect()
-  await consumer.subscribe({ topic: 'users', fromBeginning: true })
+  await consumer.subscribe({ topic: 'out', fromBeginning: false })
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {

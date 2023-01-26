@@ -15,8 +15,8 @@ app.get('/', (req, res) => {
 })
 
 app.post('/job', function (req, res) {
-  send(nJob, req.body.url, req.body.execPath, req.body.execName, req.body.outPath, req.body.outName).catch(error => { return res.status(500).send('Internal error!') })
-
+  console.log(req.body)
+  send(nJob, req.body.url, req.body.execPath, req.body.execName, req.body.args, req.body.outPath, req.body.outName).catch(error => { return res.status(500).send('Internal error!') })
   //uuid
   nJob++
 
@@ -29,7 +29,7 @@ app.listen(port, () => {
 
 
 //TODO: somewhere else and func imported
-async function send(uuid, url, execPath, execName, outPath, outName) {
+async function send(uuid, url, execPath, execName, args, outPath, outName) {
   const producer = kafka.producer()
   await producer.connect()
 
@@ -42,6 +42,7 @@ async function send(uuid, url, execPath, execName, outPath, outName) {
           url: `${url}`,
           execPath: `${execPath}`,
           execName: `${execName}`,
+          args: `${args}`,
           outPath: `${outPath}`,
           outName: `${outName}`
         })

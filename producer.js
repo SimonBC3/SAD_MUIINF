@@ -19,7 +19,7 @@ const run = async() => {
     // Producing
 await producer.connect()
  producer.send({
-    topic: 'users',
+    topic: 'out',
     messages: [
         { value: 'producer KafkaJS user!' },
     ],
