@@ -15,13 +15,11 @@ app.get('/', (req, res) => {
 })
 
 app.post('/job', function(req,res) {
-
-  console.log(req.body)
-    //producer
-    run(nJob, req.body.url, req.body.path, req.body.fileName).catch( error => { return res.status(500).send('Internal error!')})
+    send(nJob, req.body.url, req.body.path, req.body.fileName).catch( error => { return res.status(500).send('Internal error!')})
+   
     //uuid
     nJob++
-    //answer to client
+
     return res.status(200).send('Petition sent!')
 })
 
@@ -31,7 +29,7 @@ app.listen(port, () => {
 
 
 //TODO: somewhere else and func imported
-async function run(uuid, url, path, fileName){
+async function send(uuid, url, path, fileName){
   const producer = kafka.producer()
   await producer.connect()
 
