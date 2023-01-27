@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const kafka = require("./../kafka.js");
+const kafka = require("./kafka.js");
 //const keycloak = require('./keycloak-config.js').initKeycloak()
 
 const port = 3000;

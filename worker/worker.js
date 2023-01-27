@@ -8,7 +8,7 @@ const { error } = require("console");
 
 const kafka = new Kafka({
   clientId: "my-app",
-  brokers: ["localhost:29092"],
+  brokers: ["kafka:9092"],
 });
 
 const producer = kafka.producer();
@@ -17,7 +17,7 @@ const consumer = kafka.consumer({ groupId: "worker-group" });
 const run = async () => {
   // Consuming
   await consumer.connect();
-  await consumer.subscribe({ topic: "in", fromBeginning: false });
+  await consumer.subscribe({ topic: "in", fromBeginning: true });
 
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {

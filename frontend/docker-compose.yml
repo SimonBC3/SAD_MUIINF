@@ -1,10 +1,14 @@
 version: "3.9"
 services:
-  worker:
+  frontend:
     build: .
-    scale: 2
     networks:
       - internal
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+
 networks:
   internal:
     external: true

@@ -32,8 +32,11 @@ Navigate into the projects main folder.
 ```
 $ cd SAD_practicas/
 ```
-Deploy the infrastructure using the supplied script. 
+
+Deploy the infrastructure using the supplied script.
+
 ```
 $ ./launch.sh
 ```
+
 ## Usage 📑
