@@ -8,13 +8,6 @@ const kafka = new Kafka({
 const producer = kafka.producer();
 
 const run = async () => {
-  // admin.connect()
-  // admin.createTopics({
-  //         waitForLeaders: true,
-  //         topics: [
-  //             { topic: 'myRandomTopicString123' },
-  //         ],
-  //     })
   // Producing
   await producer.connect();
   producer
