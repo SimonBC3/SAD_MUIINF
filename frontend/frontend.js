@@ -9,7 +9,7 @@ var nJob = 0;
 app.use(express.json());
 //app.use(keycloak.middleware())
 
-app.get("/", (req, res) => {
+app.get("/job/{uid}", (req, res) => {
   res.send("Hello World!");
 });
 
