@@ -2,6 +2,9 @@ const { Kafka } = require("kafkajs");
 const { exec } = require("child_process");
 const { stdout, stderr } = require("process");
 const fs = require("fs/promises");
+const fsSync = require("fs");
+const util = require("util");
+const { error } = require("console");
 
 const kafka = new Kafka({
   clientId: "my-app",
@@ -26,16 +29,20 @@ const run = async () => {
 
       let jsonMessage = JSON.parse(message.value.toString());
 
-      execute(`git clone ${jsonMessage.url} clone`);
+      await execute(`git clone ${jsonMessage.url} clone`);
       //execute(`npm install`)
-      execute(
+
+      //wait for the clone
+      waiting(`./clone${jsonMessage.execPath}`, jsonMessage.execName);
+      //readOutFile
+      await execute(
         `node ./clone${jsonMessage.execPath}${jsonMessage.execName} ${jsonMessage.args}`
       );
+      //wait for the outFile
+      waiting(`.${jsonMessage.outPath}`, jsonMessage.outName)
 
-      //readOutFile
-      let path = `./clone${jsonMessage.outPath}`;
       let outMessage = await read(
-        `${jsonMessage.outPath}`,
+        `.${jsonMessage.outPath}`,
         jsonMessage.outName
       );
       await producer.connect();
@@ -50,23 +57,21 @@ const run = async () => {
           },
         ],
       });
+      await execute(`rm -rf ./clone`)
+      await execute('rm .' + jsonMessage.outPath + jsonMessage.outName)
     },
   });
 };
 
 function execute(order) {
-  exec(order, (err, stdout, stderr) => {
-    if (err) {
-      console.error(`error: ${err.message}`);
-      return;
+  return new Promise((res) => {
+    console.log("executing " + order);
+    try {
+      exec(order);
+    } catch (error) {
+      console.log(error);
     }
-
-    if (stderr) {
-      console.error(`stderr: ${stderr}`);
-      return;
-    }
-
-    console.log(`stdout:\n${stdout}`);
+    res();
   });
 }
 
@@ -74,11 +79,20 @@ async function read(path, fileName) {
   let data = "";
   try {
     data = await fs.readFile(`${path}${fileName}`, { encoding: "utf8" });
-    console.log(data);
-  } catch {
-    console.log(err);
+    console.log("success reading: " + data);
+  } catch (error) {
+    console.log(error);
   }
   return data;
+}
+
+function waiting(filePath, fileName) {
+  console.log("looking for this file: " + filePath+fileName)
+  while (
+    !fsSync.existsSync(`${filePath}${fileName}`)
+  ) {
+    setInterval(()=>{return},100);
+  }
 }
 
 run().catch(console.error);
