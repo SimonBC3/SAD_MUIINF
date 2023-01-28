@@ -39,7 +39,7 @@ const run = async () => {
         `node ./clone${jsonMessage.execPath}${jsonMessage.execName} ${jsonMessage.args}`
       );
       //wait for the outFile
-      waiting(`.${jsonMessage.outPath}`, jsonMessage.outName)
+      waiting(`.${jsonMessage.outPath}`, jsonMessage.outName);
 
       let outMessage = await read(
         `.${jsonMessage.outPath}`,
@@ -57,8 +57,8 @@ const run = async () => {
           },
         ],
       });
-      await execute(`rm -rf ./clone`)
-      await execute('rm .' + jsonMessage.outPath + jsonMessage.outName)
+      await execute(`rm -rf ./clone`);
+      await execute("rm ." + jsonMessage.outPath + jsonMessage.outName);
     },
   });
 };
@@ -87,11 +87,11 @@ async function read(path, fileName) {
 }
 
 function waiting(filePath, fileName) {
-  console.log("looking for this file: " + filePath+fileName)
-  while (
-    !fsSync.existsSync(`${filePath}${fileName}`)
-  ) {
-    setInterval(()=>{return},100);
+  console.log("looking for this file: " + filePath + fileName);
+  while (!fsSync.existsSync(`${filePath}${fileName}`)) {
+    setInterval(() => {
+      return;
+    }, 100);
   }
 }
 

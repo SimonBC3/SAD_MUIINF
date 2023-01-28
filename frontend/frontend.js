@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
-const kafka = require("./../kafka.js");
-const db = require("./../database/db.js")
+const db = require("./../database/db.js");
+const kafka = require("../kafka.js")
 //const keycloak = require('./keycloak-config.js').initKeycloak()
 
 const port = 3000;
@@ -10,8 +10,10 @@ var nJob = 0;
 app.use(express.json());
 //app.use(keycloak.middleware())
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/:id", (req, res) => {
+  if (req.params.id === "favicon.ico") return;
+
+  res.send(`Hey id: ${req.params.id}`);
 });
 
 app.post("/job", function (req, res) {
@@ -35,7 +37,7 @@ app.post("/job", function (req, res) {
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
-
+  consumeAndInsert();
 });
 
 //TODO: somewhere else and func imported
@@ -58,5 +60,31 @@ async function send(uuid, url, execPath, execName, args, outPath, outName) {
         }),
       },
     ],
+  });
+}
+
+async function consumeAndInsert() {
+  const consumer = kafka.consumer({ groupId: "frontend-group" });
+  await consumer.connect();
+  await consumer.subscribe({ topic: "out", fromBeginning: false });
+  console.log("Frontend listening to out topic");
+
+  await consumer.run({
+    eachMessage: async ({ topic, partition, message }) => {
+      console.log({
+        partition,
+        offset: message.offset,
+        value: message.value.toString(),
+      });
+      let jsonMessage = JSON.parse(message.value.toString());
+
+      try {
+        query = `INSERT INTO db.Jobs (Uuid, Result) VALUES (${jsonMessage.uuid}, \"${jsonMessage.outMessage}\")`;
+        db.query(query);
+        console.log(`Inserted ${jsonMessage.uuid}, \"${jsonMessage.outMessage}`);
+      } catch (error) {
+        console.log(error);
+      }
+    },
   });
 }
