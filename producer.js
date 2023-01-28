@@ -13,7 +13,14 @@ const run = async () => {
   producer
     .send({
       topic: "out",
-      messages: [{ value: "producer KafkaJS user!" }],
+      messages: [
+        {
+          value: JSON.stringify({
+            uuid: `1`,
+            outMessage: `sisiis`,
+          }),
+        },
+      ],
     })
     .then(console.log);
 };
