@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const db = require("./../database/db.js");
-const kafka = require("../kafka.js")
+const kafka = require("../kafka.js");
+const { query } = require("express");
 //const keycloak = require('./keycloak-config.js').initKeycloak()
 
 const port = 3000;
@@ -13,7 +14,12 @@ app.use(express.json());
 app.get("/:id", (req, res) => {
   if (req.params.id === "favicon.ico") return;
 
-  res.send(`Hey id: ${req.params.id}`);
+  let query = `SELECT * FROM db.Jobs WHERE Uuid=${req.params.id}`
+  db.query(query, (err,result,fields)=> {
+    if (err) console.log(err)
+    console.log('Result to get petition: ' + result[0].Result)
+    res.send('Your result is: ' + result[0].Result)
+  })
 });
 
 app.post("/job", function (req, res) {
