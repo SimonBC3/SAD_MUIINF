@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const kafka = require("./../kafka.js");
+const db = require("./../database/db.js")
 //const keycloak = require('./keycloak-config.js').initKeycloak()
 
 const port = 3000;
@@ -34,6 +35,7 @@ app.post("/job", function (req, res) {
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
+
 });
 
 //TODO: somewhere else and func imported
