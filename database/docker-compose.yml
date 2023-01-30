@@ -4,6 +4,7 @@ services:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     restart: always
+    container_name: mysql
     environment:
       MYSQL_DATABASE: 'db'
       MYSQL_USER: 'user'
@@ -16,6 +17,11 @@ services:
       # Where our data will be persisted
     volumes:
       - my-db:/var/lib/mysql
+    networks:
+      -internal
 # Names our volume
 volumes:
   my-db:
+networks:
+  internal:
+    external: true
