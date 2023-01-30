@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const db = require("./../database/db.js");
+const db = require("./db.js");
 const kafka = require("./kafka.js");
 const { query } = require("express");
 const { ConfigSource } = require("kafkajs");
