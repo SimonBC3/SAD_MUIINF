@@ -17,7 +17,7 @@ $ sudo apt install node
 
 > To learn more, check out how to [download NodeJS](https://nodejs.org/en/download/).
 
-Install `docker` and `docker-compose`. Instructions on how to do it in [docs.docker.com](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
+Install `docker` and `docker-compose`. Instructions on how to do it in [docs.docker.com](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). **Make sure to enable running docker as non root**.
 
 ## Installation 🛠️
 
