@@ -3,5 +3,6 @@ WORKDIR /usr/src/app
 COPY ./frontend.js .
 COPY ./kafka.js .
 COPY ./db.js .
-RUN npm install kafkajs express mysql
+COPY ./keycloak-config.js .
+RUN npm install kafkajs express mysql express-session keycloak-connect
 CMD ["node", "./frontend.js"]

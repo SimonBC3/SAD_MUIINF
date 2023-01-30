@@ -4,13 +4,17 @@ const db = require("./db.js");
 const kafka = require("./kafka.js");
 const { query } = require("express");
 const { ConfigSource } = require("kafkajs");
-//const keycloak = require('./keycloak-config.js').initKeycloak()
+const keycloak = require('./keycloak-config.js').initKeycloak()
 
 const port = 3000;
 var nJob = 0;
 
 app.use(express.json());
-//app.use(keycloak.middleware())
+app.use(keycloak.middleware())
+
+app.get("/", (req, res) => {
+  res.send('hello world')
+})
 
 app.get("/:id", (req, res) => {
   if (req.params.id === "favicon.ico") return;

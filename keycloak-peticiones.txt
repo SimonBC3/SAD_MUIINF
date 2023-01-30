@@ -1,12 +1,11 @@
-http://localhost:8080/realms/realmPrueba/protocol/openid-connect/token","introspection_endpoint
+http://localhost:8080/realms/myrealm/protocol/openid-connect/token
 
-
-curl -X POST 'http://localhost:8080/realms/realmPrueba/protocol/openid-connect/token' \
+curl -X POST 'http://localhost:8080/realms/myrealm/protocol/openid-connect/token' \
  --header 'Content-Type: application/x-www-form-urlencoded' \
  --data-urlencode 'grant_type=password' \
- --data-urlencode 'client_id=express-micro-service' \
- --data-urlencode 'client_secret=EgL3jMQOEfYr8c39XSLBjEovayjiKMIO' \
- --data-urlencode 'username=user1' \
+ --data-urlencode 'client_id=myclient' \
+ --data-urlencode 'client_secret=noOTzUvZrhod8Z1h5rrgmKsXvJyMXxKF' \
+ --data-urlencode 'username=myuser' \
  --data-urlencode 'password=1234'
 
 
