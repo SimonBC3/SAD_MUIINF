@@ -12,7 +12,7 @@ var nJob = 0;
 app.use(express.json());
 app.use(keycloak.middleware())
 
-app.get("/", (req, res) => {
+app.get("/",keycloak.protect('user'), (req, res) => {
   res.send('hello world')
 })
 
