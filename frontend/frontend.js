@@ -46,7 +46,7 @@ app.post("/job", function (req, res) {
   //uuid
   nJob++;
 
-  return res.status(200).send("Petition sent!");
+  return res.status(200).send("Petition sent with ID ");
 });
 
 app.listen(port, () => {
@@ -94,7 +94,7 @@ async function consumeAndInsert() {
 
       try {
         let query = `INSERT INTO db.Jobs (Uuid, Result) VALUES (${jsonMessage.uuid}, \"${jsonMessage.outMessage}\")`;
-        db.query(query)
+        db.query(query);
         console.log(
           `Inserted ${jsonMessage.uuid}, \"${jsonMessage.outMessage}`
         );

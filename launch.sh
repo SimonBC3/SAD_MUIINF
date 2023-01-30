@@ -1,5 +1,12 @@
-#Create docker network
-docker network create internal
+#!/bin/bash
+
+NETWORK="internal"
+
+if [ "$(docker network ls | grep "$NETWORK")" ]; then
+    echo "Network $NETWORK already exists."
+else
+    docker network create $NETWORK
+fi
 docker compose up -d
 cd ./database/
 docker compose up -d
