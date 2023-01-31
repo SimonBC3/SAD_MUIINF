@@ -109,3 +109,29 @@ Using Postman (or whatever API developing platform) you can:
 3. The number of workers attending petitions is fixed.
 4. The KeyCloack implementation is not working.
 5. Deployment in a PaaS (such as Kumori) is not specified. Everything runs in docker containers.
+
+## Uninstall 🛠️
+
+Stop all running containers.
+
+```
+$ docker stop $(docker ps -a -q)
+```
+
+Remove all containers.
+
+```
+$ docker rm $(docker ps -a -q)
+```
+
+Delete network.
+
+```
+$ docker network rm internal
+```
+
+Delete MYSQL docker volume.
+
+```
+$ docker volume rm database_my-db
+```
