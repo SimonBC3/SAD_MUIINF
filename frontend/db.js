@@ -15,9 +15,8 @@ try {
 }
 
 function setUp() {
-  let query = "DROP TABLE IF EXISTS db.Jobs";
-  connection.query(query);
-  query = "CREATE TABLE db.Jobs ( Uuid INT, Result varchar(255));";
+  query =
+    "CREATE TABLE IF NOT EXISTS db.Jobs ( Uuid varchar(255), Result varchar(1024))";
   connection.query(query);
 }
 
