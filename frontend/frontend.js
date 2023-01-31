@@ -1,8 +1,12 @@
 const express = require("express");
 const app = express();
 const db = require("./db.js");
-const kafka = require("./kafka.js");
+const { Kafka } = require("kafkajs");
 
+const kafka = new Kafka({
+  clientId: "my-app",
+  brokers: ["kafka:9092"],
+});
 //const keycloak = require('./keycloak-config.js').initKeycloak()
 
 const port = 3000;

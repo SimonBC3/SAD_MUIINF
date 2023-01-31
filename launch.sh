@@ -7,11 +7,11 @@ if [ "$(docker network ls | grep "$NETWORK")" ]; then
 else
     docker network create $NETWORK
 fi
+cd ./kafka/
 docker compose up -d
-cd ./database/
+cd ../database/
 docker compose up -d
-cd ..
-cd ./worker/
+cd ../worker/
 docker compose up -d
 cd ../frontend/
 docker compose up -d
