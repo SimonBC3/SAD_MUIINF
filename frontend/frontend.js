@@ -7,7 +7,6 @@ const { ConfigSource } = require("kafkajs");
 //const keycloak = require('./keycloak-config.js').initKeycloak()
 
 const port = 3000;
-var nJob = 0;
 
 app.use(express.json());
 //app.use(keycloak.middleware())
@@ -28,6 +27,7 @@ app.get("/:id", (req, res) => {
 
 app.post("/job", function (req, res) {
   console.log(req.body);
+  var nJob = Math.random().toString(36).substring(2, 18);
   send(
     nJob,
     req.body.url,
@@ -39,10 +39,8 @@ app.post("/job", function (req, res) {
   ).catch((error) => {
     return res.status(500).send("Internal error!");
   });
-  //uuid
-  nJob++;
 
-  return res.status(200).send("Petition sent with ID ");
+  return res.status(200).send("Petition sent with ID " + nJob);
 });
 
 app.listen(port, () => {
