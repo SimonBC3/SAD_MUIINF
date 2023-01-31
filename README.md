@@ -43,7 +43,7 @@ $ ./launch.sh
 
 Using Postman (or whatever API developing platform) you can:
 
-- Send instructions to a worker. These instructions are defined as a `JSON` object with the next fields. Each processed output will be stored in the Kafka queue and saved in a DB on the frontend.
+- Send instructions to a worker. These instructions are defined as a `JSON` object with the next fields. Each processed output will be stored in the Kafka queue and then consumed by the frontend to store in a MYSQL DB.
 
   | REST Operation | Endpoint           |
   | -------------- | ------------------ |
@@ -55,7 +55,7 @@ Using Postman (or whatever API developing platform) you can:
   | ---------- | ----------------------------------------------------------------------------------- |
   | "url"      | The full URL of the repository that contains the code to be executed by the worker. |
   | "execPath" | The full path of the executable within the downloaded code.                         |
-  | "execName" | The name of the executable program that is going to be runned.                      |
+  | "execName" | The name of the executable program that is going to be run.                         |
   | "args"     | The arguments of the program.                                                       |
   | "outPath"  | The full path where the program is going to print the output on a file.             |
   | "outName"  | The name of the file within the "outPath" that will contain the output.             |
