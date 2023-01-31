@@ -6,6 +6,7 @@ This project aims to:
 - Containerize the application using Docker.
 - Implement event-driven communication using KafkaJS.
 - Secure the application with Keycloak.
+- Deploy the infrastructure in a PaaS (Kumori).
 
 ## System requirements 🖥️
 
