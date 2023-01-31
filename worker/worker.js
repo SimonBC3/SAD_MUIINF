@@ -27,6 +27,10 @@ const run = async () => {
         value: message.value.toString(),
       });
 
+      log(`partition: ${partition} \n offset: ${
+        message.offset
+      } \n value: ${message.value.toString()}`)
+
       let jsonMessage = JSON.parse(message.value.toString());
 
       await execute(`git clone ${jsonMessage.url} clone`);
@@ -66,6 +70,7 @@ const run = async () => {
 function execute(order) {
   return new Promise((res) => {
     console.log("executing " + order);
+    log("executing " + order)
     try {
       exec(order);
     } catch (error) {
@@ -80,6 +85,7 @@ async function read(path, fileName) {
   try {
     data = await fs.readFile(`${path}${fileName}`, { encoding: "utf8" });
     console.log("success reading: " + data);
+    log("success reading: " + data);
   } catch (error) {
     console.log(error);
   }
@@ -87,12 +93,18 @@ async function read(path, fileName) {
 }
 
 function waiting(filePath, fileName) {
-  console.log("looking for this file: " + filePath + fileName);
+  let message = "looking for this file: " + filePath + fileName;
+  console.log(message);
+  log(message);
   while (!fsSync.existsSync(`${filePath}${fileName}`)) {
     setInterval(() => {
       return;
     }, 100);
   }
+}
+
+function log(message) {
+  fsSync.appendFileSync("./worker.log", message + "\n", { flags: "a" });
 }
 
 run().catch(console.error);
