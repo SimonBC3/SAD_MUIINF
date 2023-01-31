@@ -2,8 +2,7 @@ const express = require("express");
 const app = express();
 const db = require("./db.js");
 const kafka = require("./kafka.js");
-const { query } = require("express");
-const { ConfigSource } = require("kafkajs");
+
 //const keycloak = require('./keycloak-config.js').initKeycloak()
 
 const port = 3000;
@@ -14,7 +13,7 @@ app.use(express.json());
 app.get("/:id", (req, res) => {
   if (req.params.id === "favicon.ico") return;
 
-  let query = `SELECT * FROM db.Jobs WHERE Uuid=${req.params.id}`;
+  let query = `SELECT * FROM db.Jobs WHERE Uuid=\"${req.params.id}\"`;
   db.query(query, (err, result, fields) => {
     if (err) console.log(err);
     if (result[0] == undefined) {
@@ -26,6 +25,8 @@ app.get("/:id", (req, res) => {
 });
 
 app.post("/job", function (req, res) {
+  //uuid
+  nJob = Math.random().toString(36).substring(2, 18);
   console.log(req.body);
   var nJob = Math.random().toString(36).substring(2, 18);
   send(
@@ -87,7 +88,7 @@ async function consumeAndInsert() {
       let jsonMessage = JSON.parse(message.value.toString());
 
       try {
-        let query = `INSERT INTO db.Jobs (Uuid, Result) VALUES (${jsonMessage.uuid}, \"${jsonMessage.outMessage}\")`;
+        let query = `INSERT INTO db.Jobs (Uuid, Result) VALUES (\"${jsonMessage.uuid}\", \"${jsonMessage.outMessage}\")`;
         db.query(query);
         console.log(
           `Inserted ${jsonMessage.uuid}, \"${jsonMessage.outMessage}`
