@@ -6,7 +6,6 @@ const kafka = require("./kafka.js");
 //const keycloak = require('./keycloak-config.js').initKeycloak()
 
 const port = 3000;
-var nJob = 0;
 
 app.use(express.json());
 //app.use(keycloak.middleware())
@@ -29,6 +28,7 @@ app.post("/job", function (req, res) {
   //uuid
   nJob = Math.random().toString(36).substring(2, 18);
   console.log(req.body);
+  var nJob = Math.random().toString(36).substring(2, 18);
   send(
     nJob,
     req.body.url,
